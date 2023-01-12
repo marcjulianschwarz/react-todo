@@ -41,6 +41,38 @@ export default function App() {
             }
           }}
         ></input>
+        <div className="intro">
+          <div className="intro-row">
+            <div className="shortcut">
+              <span className="key">⌘</span>
+              <span> + </span>
+              <span className="key">⇧</span>
+              <span> + </span>
+              <span className="key">P</span>
+            </div>
+            <div className="description">New Todo List</div>
+          </div>
+          <div className="intro-row">
+            <div className="shortcut">
+              <span className="key">⌘</span>
+              <span> + </span>
+              <span className="key">Enter</span>
+            </div>
+            <div className="description">
+              <span>Complete Todo</span>
+            </div>
+          </div>
+          <div className="intro-row">
+            <div className="shortcut">
+              <span className="key">↑</span>
+              <span> or </span>
+              <span className="key">↓</span>
+            </div>
+            <div className="description">
+              <span>Navigation</span>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

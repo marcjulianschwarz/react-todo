@@ -19,6 +19,7 @@ export function TodoListItem(props: TodoListItemProps) {
       <input
         type="text"
         className={className}
+        spellCheck={false}
         ref={(el: HTMLInputElement) => onInit(todo, el)}
         defaultValue={todo.title + (todo.completed ? " (completed)" : "")}
         onKeyDownCapture={(event: React.KeyboardEvent<HTMLInputElement>) => {

@@ -1,9 +1,30 @@
+:root {
+  --strike-color: #cf4646;
+
+  @media (prefers-color-scheme: dark) {
+    --background-color: #1e1e1e;
+    --text-color: #f0f0f0;
+    --text-color-faint: #3a3a3a;
+    --faint: #262626;
+    --key-background-color: #3a3a3a;
+  }
+
+  @media (prefers-color-scheme: light) {
+    --background-color: #fafafa;
+    --text-color: #1e1e1e;
+    --text-color-faint: #959595;
+    --faint: #e2e2e2;
+    --key-background-color: #e2e2e2;
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
     "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
 }
 
 code {
@@ -11,14 +32,17 @@ code {
 }
 
 .todo-lists-container {
-  width: 100%;
+  max-width: 90%;
   display: flex;
   flex-direction: row;
   gap: 20px;
   justify-content: center;
+  margin: auto;
+  flex-wrap: wrap;
 
   .todo-list {
     margin-top: 100px;
+    flex-grow: 1;
 
     .todo-list-title {
       color: #959595;
@@ -28,13 +52,11 @@ code {
     ul {
       display: flex;
       flex-direction: column;
-      align-items: center;
       list-style: none;
       padding: 0;
       margin: 10px;
 
       li {
-        font-size: 30px;
         list-style: none;
       }
     }
@@ -43,29 +65,30 @@ code {
 
 hr {
   width: 100%;
-  border: 1px dashed #f0f0f0;
+  border: 1px dashed var(--faint);
 
   &.selected {
-    border-color: green;
+    border-color: var(--text-color-faint);
   }
 }
 
 .text-box {
   border: 0px solid;
-  background-color: white;
-  font-size: 30px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 24px;
   width: 100%;
+
+  &.strike {
+    color: var(--text-color-faint);
+    text-decoration: line-through;
+    text-decoration-color: darkred;
+    transition: 0.35s;
+  }
 }
 
 .text-box:focus {
   outline: none;
-}
-
-.strike {
-  text-decoration: line-through;
-  text-decoration-color: darkred;
-  color: #e2e2e2;
-  transition: 0.35s;
 }
 
 .all-completed {
@@ -75,17 +98,50 @@ hr {
 .first-note-list-creation-container {
   display: flex;
   justify-content: center;
-  height: 100vh;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  .intro {
+    margin-top: 100px;
+    //background-color: red;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .intro-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 70px;
+
+      .shortcut {
+        .key {
+          background-color: var(--key-background-color);
+          padding: 3px;
+          border-radius: 2px;
+          color: var(--text-color);
+        }
+        color: var(--text-color);
+      }
+
+      .description {
+        color: var(--text-color);
+        // algin on right side
+      }
+    }
+  }
 
   input {
-    font-size: 30px;
     height: max-content;
     width: max-content;
     border: 0px solid;
     border-bottom: #959595 solid 1px;
     text-align: center;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-top: 40%;
+    font-size: 24px;
+    background-color: var(--background-color);
+    color: var(--text-color);
 
     &:focus {
       outline: none;

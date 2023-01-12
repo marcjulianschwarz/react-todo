@@ -109,7 +109,6 @@ export default function TodoList(props: { title: string }) {
 
   return (
     <div className="todo-list">
-      <span>{currentPosition}</span>
       <span className={titleClassName}>
         {props.title} - {completedTodos.length} / {todos.length}
       </span>
