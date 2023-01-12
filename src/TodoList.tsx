@@ -1,25 +1,34 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import { useFocus } from "./hooks";
 import { todoReducer } from "./todoReducer";
-import { classNameBuilder, Todo, UserAction } from "./utils";
+import { classNameBuilder, NavigationDirection, Todo, UserAction } from "./utils";
 import { TodoListItem } from "./TodoListItem";
 
 export default function TodoList(props: { title: string }) {
   const [todos, dispatch] = useReducer(todoReducer, []);
   const [focusElement, getMap] = useFocus();
   const [showCompleted, setShowCompleted] = useState<Todo>();
+  const [currentPosition, setCurrentPosition] = useState(-1);
 
   // Show completed "modal" for two seconds
   useEffect(() => {
     if (showCompleted) {
       setInterval(() => {
         setShowCompleted(undefined);
-      }, 2000);
+      }, 5000);
     }
   }, [showCompleted]);
 
   // Setting focus to new todo input
   const newTodoInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (currentPosition == -1) {
+      newTodoInput.current?.focus();
+    } else {
+      focusElement(todos[currentPosition]);
+    }
+  }, [currentPosition]);
 
   function handleDeleteTodo(todo: Todo, moveTo: number) {
     dispatch({
@@ -29,7 +38,7 @@ export default function TodoList(props: { title: string }) {
     if (moveTo < 0) {
       newTodoInput.current?.focus();
     }
-    focusElement(todos[moveTo]);
+    setCurrentPosition(currentPosition - 1);
   }
 
   function handleAddTodo(title: string) {
@@ -73,12 +82,34 @@ export default function TodoList(props: { title: string }) {
     }
   }
 
+  function handleNavigation(direction: NavigationDirection, idx: number) {
+    switch (direction) {
+      case NavigationDirection.Up:
+        if (currentPosition > 0) {
+          setCurrentPosition(currentPosition - 1);
+        }
+        break;
+      case NavigationDirection.Down:
+        if (currentPosition < todos.length - 1) {
+          setCurrentPosition(currentPosition + 1);
+        }
+        if (currentPosition == todos.length - 1) {
+          setCurrentPosition(-1);
+        }
+        break;
+      case NavigationDirection.MouseClick:
+        setCurrentPosition(idx);
+        break;
+    }
+  }
+
   const completedTodos = todos.filter((t: Todo) => t.completed);
   const allCompleted = completedTodos.length == todos.length && todos.length > 0;
   const titleClassName = classNameBuilder("todo-list-title", { condition: allCompleted, className: "all-completed" });
 
   return (
     <div className="todo-list">
+      <span>{currentPosition}</span>
       <span className={titleClassName}>
         {props.title} - {completedTodos.length} / {todos.length}
       </span>
@@ -86,14 +117,18 @@ export default function TodoList(props: { title: string }) {
       <ul>
         {todos.map((todo, idx) => {
           return (
-            <TodoListItem
-              key={todo.id}
-              todo={todo}
-              onRemoveTodo={(todo: Todo) => handleDeleteTodo(todo, idx - 1)}
-              onUpdateTodo={(todo: Todo) => handleUpdateTodo(todo, idx + 1)}
-              onCompleted={handleCompleted}
-              onInit={addRefToMap}
-            />
+            <>
+              <TodoListItem
+                key={todo.id}
+                todo={todo}
+                onRemoveTodo={(todo: Todo) => handleDeleteTodo(todo, idx - 1)}
+                onUpdateTodo={(todo: Todo) => handleUpdateTodo(todo, idx + 1)}
+                onCompleted={handleCompleted}
+                onNavigation={(direction: NavigationDirection) => handleNavigation(direction, idx)}
+                onInit={addRefToMap}
+              />
+              <hr className={idx == currentPosition ? "selected" : ""}></hr>
+            </>
           );
         })}
         <li>
@@ -109,14 +144,12 @@ export default function TodoList(props: { title: string }) {
               if (event.key == "Backspace" && event.currentTarget.value == "" && todos.length > 0) {
                 event.preventDefault();
                 event.stopPropagation();
-                focusElement(todos[todos.length - 1]);
+                setCurrentPosition(todos.length - 1);
               }
               if (event.key == "ArrowUp") {
                 event.preventDefault();
                 event.stopPropagation();
-                if (todos.length > 0) {
-                  focusElement(todos[todos.length - 1]);
-                }
+                setCurrentPosition(todos.length - 1);
               }
             }}
           />

@@ -25,3 +25,9 @@ export interface Todo {
   completed: boolean;
   id: string;
 }
+
+export enum NavigationDirection {
+  Up,
+  Down,
+  MouseClick
+}

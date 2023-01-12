@@ -1,4 +1,4 @@
-import { classNameBuilder, Todo } from "./utils";
+import { classNameBuilder, NavigationDirection, Todo } from "./utils";
 
 interface TodoListItemProps {
   todo: Todo;
@@ -6,6 +6,7 @@ interface TodoListItemProps {
   onRemoveTodo: (todo: Todo) => void;
   onUpdateTodo: (todo: Todo, move: boolean) => void;
   onCompleted: (todo: Todo) => void;
+  onNavigation: (direction: NavigationDirection) => void;
 }
 
 export function TodoListItem(props: TodoListItemProps) {
@@ -34,9 +35,23 @@ export function TodoListItem(props: TodoListItemProps) {
             todo.title = event.currentTarget.value;
             onUpdateTodo(todo, true);
           }
+          if (event.key == "ArrowUp") {
+            event.preventDefault();
+            event.stopPropagation();
+            props.onNavigation(NavigationDirection.Up);
+          }
+          if (event.key == "ArrowDown") {
+            event.preventDefault();
+            event.stopPropagation();
+            props.onNavigation(NavigationDirection.Down);
+          }
+        }}
+        onMouseDownCapture={(event: React.MouseEvent<HTMLInputElement>) => {
+          event.preventDefault();
+          event.stopPropagation();
+          props.onNavigation(NavigationDirection.MouseClick);
         }}
       />
-      <hr></hr>
     </li>
   );
 }

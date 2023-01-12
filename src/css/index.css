@@ -33,9 +33,12 @@ code {
   font-size: 30px;
   list-style: none;
 }
-.todo-lists-container .todo-list ul li hr {
+hr {
   width: 100%;
   border: 1px dashed #f0f0f0;
+}
+hr.selected {
+  border-color: green;
 }
 .text-box {
   border: 0px solid;
