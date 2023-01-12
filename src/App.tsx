@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import TodoList from "./SimpleTodo";
+import TodoList from "./TodoList";
 
 export default function App() {
   const [todoLists, setTodoLists] = useState<string[]>([]);
