@@ -10,7 +10,7 @@ export default function TodoListComponent(props: {
   handleListDelete: (list: TodoList) => void;
 }) {
   const [todos, dispatch] = useReducer(todoReducer, props.todoList.todos);
-  const [focusElement, getMap] = useFocus();
+  const [focusElement, getMap] = useFocus<Todo>();
   const [currentPosition, setCurrentPosition] = useState(-1);
 
   // Setting focus to new todo input
@@ -155,6 +155,7 @@ export default function TodoListComponent(props: {
             key="new-todo"
             ref={newTodoInput}
             className="text-box"
+            onFocusCapture={() => setCurrentPosition(-1)}
             onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (event.key == "Enter") {
                 handleAddTodo(event.currentTarget.value);

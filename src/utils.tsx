@@ -37,3 +37,9 @@ export interface TodoList {
   todos: Todo[];
   id: string;
 }
+
+export interface Command {
+  title: string;
+  hotkey: string;
+  id: string;
+}

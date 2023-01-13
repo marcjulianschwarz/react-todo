@@ -202,3 +202,50 @@ hr {
     }
   }
 }
+
+// .app {
+//   width: 100vw;
+//   height: 100vw;
+// }
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .list-item {
+    outline: none;
+  }
+}
+
+.command-palette {
+  width: 30%;
+  padding: 20px;
+
+  input {
+    margin-bottom: 20px;
+  }
+
+  .command {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    outline: none;
+    padding: 5px;
+    border-radius: 5px;
+
+    &.focused {
+      background-color: var(--secondary-background-color);
+    }
+
+    .hotkey {
+      color: var(--text-color);
+      background-color: var(--key-background-color);
+      padding: 5px;
+      border-radius: 5px;
+    }
+    .title {
+      color: var(--text-color);
+    }
+  }
+}

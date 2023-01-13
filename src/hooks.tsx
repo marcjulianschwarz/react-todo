@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
 import { Todo } from "./utils";
 
-export function useFocus() {
+interface Unique {
+  id: string;
+}
+
+export function useFocus<P extends Unique>() {
   // Store refs to todo items
   const itemsRef = useRef<Map<string, HTMLElement>>();
 
@@ -12,10 +16,12 @@ export function useFocus() {
     return itemsRef.current;
   }
 
-  function focusElement(todo: Todo) {
+  function focusElement(item: P) {
     const map = getMap();
-    const el = map.get(todo.id);
+    const el = map.get(item.id);
     if (el) {
+        console.log("HOOK focusing on")
+        console.log(el)
       el.focus();
     }
   }

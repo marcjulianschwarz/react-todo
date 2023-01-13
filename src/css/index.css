@@ -173,3 +173,38 @@ hr.selected {
   font-weight: bold;
   font-size: 15px;
 }
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.list .list-item {
+  outline: none;
+}
+.command-palette {
+  width: 30%;
+  padding: 20px;
+}
+.command-palette input {
+  margin-bottom: 20px;
+}
+.command-palette .command {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  outline: none;
+  padding: 5px;
+  border-radius: 5px;
+}
+.command-palette .command.focused {
+  background-color: var(--secondary-background-color);
+}
+.command-palette .command .hotkey {
+  color: var(--text-color);
+  background-color: var(--key-background-color);
+  padding: 5px;
+  border-radius: 5px;
+}
+.command-palette .command .title {
+  color: var(--text-color);
+}
