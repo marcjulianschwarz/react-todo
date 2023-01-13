@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { HUD } from "./components/HUD";
 import { useHUD } from "./hooks";
-import TodoList from "./TodoList";
+import TodoListComponent from "./TodoList";
+import { todoListReducer } from "./todoReducer";
+import { TodoList, UserAction } from "./utils";
 
 export default function App() {
-  const [todoLists, setTodoLists] = useState<string[]>([]);
+  const [todoLists, dispatch] = useReducer(
+    todoListReducer,
+    localStorage.getItem("todoLists") ? JSON.parse(localStorage.getItem("todoLists") || "") : []
+  );
   const [triggerHUD, HUDState] = useHUD();
 
   const firstInputRef = useRef<HTMLInputElement>(null);
@@ -22,13 +27,25 @@ export default function App() {
             if (event.metaKey && event.shiftKey && event.key == "p") {
               event.preventDefault();
               event.stopPropagation();
-              setTodoLists([...todoLists, prompt("Enter a new todo list name") || "Default"]);
+              const title = prompt("New Todo List Title") || "No Name";
+              dispatch({
+                type: UserAction.Add,
+                payload: { title: title },
+              });
+
               triggerHUD("New List ✅", "");
             }
           }}
         >
-          {todoLists.map((title, idx) => {
-            return <TodoList title={title} key={idx} triggerHUD={triggerHUD} />;
+          {todoLists.map((todoList: TodoList) => {
+            return (
+              <TodoListComponent
+                todoList={todoList}
+                key={todoList.id}
+                triggerHUD={triggerHUD}
+                handleListDelete={(list: TodoList) => dispatch({ type: UserAction.Delete, payload: { id: list.id } })}
+              />
+            );
           })}
         </div>
         <HUD title={HUDState.title} message={HUDState.message} visible={HUDState.visible}></HUD>
@@ -43,7 +60,10 @@ export default function App() {
           placeholder="First Todo List"
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (event.key == "Enter") {
-              setTodoLists([...todoLists, event.currentTarget.value]);
+              dispatch({
+                type: UserAction.Add,
+                payload: { title: event.currentTarget.value },
+              });
               event.currentTarget.value = "";
             }
           }}

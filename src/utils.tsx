@@ -31,3 +31,9 @@ export enum NavigationDirection {
   Down,
   MouseClick,
 }
+
+export interface TodoList {
+  title: string;
+  todos: Todo[];
+  id: string;
+}

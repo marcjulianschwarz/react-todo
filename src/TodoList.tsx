@@ -1,14 +1,15 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import { useFocus } from "./hooks";
 import { todoReducer } from "./todoReducer";
-import { classNameBuilder, NavigationDirection, Todo, UserAction } from "./utils";
+import { classNameBuilder, NavigationDirection, Todo, TodoList, UserAction } from "./utils";
 import { TodoListItem } from "./TodoListItem";
 
-export default function TodoList(props: {
-  title: string;
+export default function TodoListComponent(props: {
+  todoList: TodoList;
   triggerHUD: (message: string, title?: string | undefined) => void;
+  handleListDelete: (list: TodoList) => void;
 }) {
-  const [todos, dispatch] = useReducer(todoReducer, []);
+  const [todos, dispatch] = useReducer(todoReducer, props.todoList.todos);
   const [focusElement, getMap] = useFocus();
   const [currentPosition, setCurrentPosition] = useState(-1);
 
@@ -22,6 +23,19 @@ export default function TodoList(props: {
       focusElement(todos[currentPosition]);
     }
   }, [currentPosition]);
+
+  // Updating localStorage on todos change
+  useEffect(() => {
+    const lists = localStorage.getItem("todoLists");
+    if (lists) {
+      const todoLists = JSON.parse(lists) as TodoList[];
+      const updatedTodoList = todoLists.find((list) => list.id == props.todoList.id);
+      if (updatedTodoList) {
+        updatedTodoList.todos = todos;
+      }
+      localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    }
+  }, [todos]);
 
   function completedTodos() {
     return todos.filter((todo) => todo.completed).length;
@@ -106,14 +120,18 @@ export default function TodoList(props: {
   }
 
   const allCompleted = completedTodos() == todos.length && todos.length > 0;
-  const titleClassName = classNameBuilder("todo-list-title", { condition: allCompleted, className: "all-completed" });
+  const titleClassName = classNameBuilder("title", { condition: allCompleted, className: "all-completed" });
 
   return (
     <div className="todo-list">
-      <span className={titleClassName}>
-        {props.title} - {completedTodos()} / {todos.length}
-      </span>
-
+      <div className="header">
+        <span className={titleClassName}>
+          {props.todoList.title} - {completedTodos()} / {todos.length}
+        </span>
+        <span className="delete" onClick={() => props.handleListDelete(props.todoList)}>
+          Delete
+        </span>
+      </div>
       <ul>
         {todos.map((todo, idx) => {
           return (

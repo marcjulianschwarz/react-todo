@@ -1,4 +1,4 @@
-import { Todo, UserAction } from "./utils";
+import { Todo, TodoList, UserAction } from "./utils";
 
 type TodoReducerAction =
   | { type: UserAction.Add; payload: { title: string } }
@@ -19,22 +19,50 @@ export function todoReducer(todos: Todo[], action: TodoReducerAction) {
   switch (action.type) {
     case UserAction.Add: {
       console.log("Add " + action.payload.title);
-      return [...todos, { title: action.payload.title, completed: false, id: crypto.randomUUID() }];
+      const newTodos = [...todos, { title: action.payload.title, completed: false, id: crypto.randomUUID() }];
+      return newTodos;
     }
     case UserAction.Delete: {
       console.log("Delete " + action.payload.todo.title);
-      return todos.filter((t: Todo) => t.id != action.payload.todo.id);
+      const newTodos = todos.filter((t: Todo) => t.id != action.payload.todo.id);
+      return newTodos;
     }
     case UserAction.Update: {
       console.log("Update " + action.payload.todo.title);
-      return updateTodo(todos, action.payload.todo);
+      const updatedTodos = updateTodo(todos, action.payload.todo);
+      return updatedTodos;
     }
     case UserAction.Completed: {
       console.log("Completed " + (action.payload.todo.completed ? "✅" : "❌"));
-      return updateTodo(todos, action.payload.todo);
+      const updatedTodos = updateTodo(todos, action.payload.todo);
+      return updatedTodos;
     }
     default:
       console.log("The action is not supported");
       return todos;
+  }
+}
+
+type TodoListReducerAction =
+  | { type: UserAction.Add; payload: { title: string } }
+  | { type: UserAction.Delete; payload: { id: string } };
+
+export function todoListReducer(todoLists: TodoList[], action: TodoListReducerAction) {
+  switch (action.type) {
+    case UserAction.Add: {
+      console.log("Add " + action.payload.title);
+      const newTodoLists = [...todoLists, { title: action.payload.title, todos: [], id: crypto.randomUUID() }];
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      return newTodoLists;
+    }
+    case UserAction.Delete: {
+      console.log("Delete " + action.payload.id);
+      const newTodoLists = todoLists.filter((t: TodoList) => t.id != action.payload.id);
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      return newTodoLists;
+    }
+    default:
+      console.log("The action is not supported");
+      return todoLists;
   }
 }
