@@ -6,7 +6,7 @@ import { TodoListItem } from "./TodoListItem";
 
 export default function TodoListComponent(props: {
   todoList: TodoList;
-  triggerHUD: (message: string, title?: string | undefined) => void;
+  triggerHUD: (title: string | undefined, message: string) => void;
   handleListDelete: (list: TodoList) => void;
 }) {
   const [todos, dispatch] = useReducer(todoReducer, props.todoList.todos);
@@ -64,7 +64,6 @@ export default function TodoListComponent(props: {
       type: UserAction.Update,
       payload: { todo: todo },
     });
-    console.log(moveTo);
     if (moveTo < 0) {
       moveTo = 0;
     } else if (moveTo >= todos.length) {
@@ -84,7 +83,7 @@ export default function TodoListComponent(props: {
       props.triggerHUD("", "All done! 🎉");
     } else {
       if (todo.completed) {
-        props.triggerHUD(todos.length - completed + " more to go", "Completed" + " 🎉");
+        props.triggerHUD("", "Completed" + " 🎉  " + (todos.length - completed) + " more to go");
       }
     }
   }

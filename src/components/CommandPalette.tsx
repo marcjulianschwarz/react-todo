@@ -1,11 +1,11 @@
-import { KeyboardEvent, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Command } from "../utils";
 import List from "./List";
 
 export function CommandPalette(props: { onCommand: (command: Command) => void }) {
   const allCommands: Command[] = [
-    { title: "New List", hotkey: "Ctrl + Shift + L", id: "new-list" },
-    { title: "Delete List", hotkey: "Ctrl + Shift + D", id: "delete-list" },
+    { title: "New List", hotkey: "⌘ + ⇧ + P", id: "new-list" },
+    { title: "Delete List", hotkey: "-", id: "delete-list" },
   ];
 
   const [commands, setCommands] = useState(allCommands);
@@ -38,6 +38,7 @@ export function CommandPalette(props: { onCommand: (command: Command) => void })
       <input
         ref={ref}
         type="text"
+        placeholder={"Search commands..."}
         onChange={(ev) => {
           setCommands(
             allCommands.filter((command) => command.title.toLowerCase().includes(ev.target.value.toLowerCase()))
@@ -59,7 +60,6 @@ export function CommandPalette(props: { onCommand: (command: Command) => void })
             focus={focused == idx}
             onFocus={() => setFocused(idx)}
             onSelection={() => {
-              console.log("Selected: ", command.title);
               props.onCommand(command);
             }}
           >

@@ -8,6 +8,20 @@
     --text-color-faint: #3a3a3a;
     --faint: #262626;
     --key-background-color: #3a3a3a;
+
+    --shadow-color: 0deg 0% 0%;
+    --shadow-elevation-low: 0.3px 0.5px 0.5px hsl(var(--shadow-color) / 0.16),
+      0.4px 0.8px 0.8px -1.9px hsl(var(--shadow-color) / 0.12), 1px 2px 2.1px -3.8px hsl(var(--shadow-color) / 0.08);
+    --shadow-elevation-medium: 0.3px 0.5px 0.5px hsl(var(--shadow-color) / 0.17),
+      0.6px 1.2px 1.2px -1.3px hsl(var(--shadow-color) / 0.14), 1.8px 3.7px 3.8px -2.6px hsl(var(--shadow-color) / 0.11),
+      5px 10px 10.3px -3.8px hsl(var(--shadow-color) / 0.08);
+    --shadow-elevation-high: 0.3px 0.5px 0.5px hsl(var(--shadow-color) / 0.15),
+      0.8px 1.7px 1.7px -0.5px hsl(var(--shadow-color) / 0.14), 1.7px 3.4px 3.5px -1.1px hsl(var(--shadow-color) / 0.13),
+      3.2px 6.5px 6.7px -1.6px hsl(var(--shadow-color) / 0.11),
+      5.9px 11.8px 12.2px -2.2px hsl(var(--shadow-color) / 0.1),
+      10.1px 20.3px 20.9px -2.7px hsl(var(--shadow-color) / 0.09),
+      16.4px 32.7px 33.7px -3.3px hsl(var(--shadow-color) / 0.07),
+      25px 50px 51.6px -3.8px hsl(var(--shadow-color) / 0.06);
   }
 
   @media (prefers-color-scheme: light) {
@@ -122,7 +136,7 @@ hr {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 10%;
+  padding-top: 100px;
 
   .intro {
     margin-top: 100px;
@@ -171,9 +185,14 @@ hr {
 
 .HUD {
   //background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  bottom: 20px;
+  right: 0;
+  left: 0;
   margin-left: auto;
   margin-right: auto;
   z-index: 1000;
+
   width: max-content;
 
   &.hide {
@@ -219,11 +238,32 @@ hr {
 }
 
 .command-palette {
-  width: 30%;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  right: 0;
+  left: 0;
+  top: 50px;
+
+  width: 50%;
   padding: 20px;
+  background-color: var(--secondary-background-color);
+  border-radius: 5px;
+  z-index: 1000;
+  box-shadow: var(--shadow-elevation-medium);
 
   input {
     margin-bottom: 20px;
+    background-color: var(--secondary-background-color);
+    width: 100%;
+    border: 1px solid var(--faint);
+    font-size: 20px;
+    color: var(--text-color);
+    padding: 5px;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .command {
@@ -235,7 +275,7 @@ hr {
     border-radius: 5px;
 
     &.focused {
-      background-color: var(--secondary-background-color);
+      background-color: var(--background-color);
     }
 
     .hotkey {
@@ -248,4 +288,8 @@ hr {
       color: var(--text-color);
     }
   }
+}
+
+.app {
+  min-height: 100vh;
 }

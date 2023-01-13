@@ -20,8 +20,7 @@ export function useFocus<P extends Unique>() {
     const map = getMap();
     const el = map.get(item.id);
     if (el) {
-        console.log("HOOK focusing on")
-        console.log(el)
+      console.log(el);
       el.focus();
     }
   }
@@ -45,7 +44,7 @@ export function useHUD() {
     setVisible(false);
   };
 
-  const triggerHUD = (message: string, title?: string) => {
+  const triggerHUD = (title: string | undefined, message: string) => {
     if (visible) {
       hideHUD();
       clearTimeout(timeoutV);
