@@ -4,20 +4,13 @@ import { todoReducer } from "./todoReducer";
 import { classNameBuilder, NavigationDirection, Todo, UserAction } from "./utils";
 import { TodoListItem } from "./TodoListItem";
 
-export default function TodoList(props: { title: string }) {
+export default function TodoList(props: {
+  title: string;
+  triggerHUD: (message: string, title?: string | undefined) => void;
+}) {
   const [todos, dispatch] = useReducer(todoReducer, []);
   const [focusElement, getMap] = useFocus();
-  const [showCompleted, setShowCompleted] = useState<Todo>();
   const [currentPosition, setCurrentPosition] = useState(-1);
-
-  // Show completed "modal" for two seconds
-  useEffect(() => {
-    if (showCompleted) {
-      setInterval(() => {
-        setShowCompleted(undefined);
-      }, 5000);
-    }
-  }, [showCompleted]);
 
   // Setting focus to new todo input
   const newTodoInput = useRef<HTMLInputElement>(null);
@@ -29,6 +22,10 @@ export default function TodoList(props: { title: string }) {
       focusElement(todos[currentPosition]);
     }
   }, [currentPosition]);
+
+  function completedTodos() {
+    return todos.filter((todo) => todo.completed).length;
+  }
 
   function handleDeleteTodo(todo: Todo, moveTo: number) {
     dispatch({
@@ -68,8 +65,13 @@ export default function TodoList(props: { title: string }) {
       type: UserAction.Completed,
       payload: { todo: todo },
     });
-    if (todo.completed) {
-      setShowCompleted(todo);
+    const completed = completedTodos();
+    if (completed == todos.length) {
+      props.triggerHUD("", "All done! 🎉");
+    } else {
+      if (todo.completed) {
+        props.triggerHUD(todos.length - completed + " more to go", "Completed" + " 🎉");
+      }
     }
   }
 
@@ -103,14 +105,13 @@ export default function TodoList(props: { title: string }) {
     }
   }
 
-  const completedTodos = todos.filter((t: Todo) => t.completed);
-  const allCompleted = completedTodos.length == todos.length && todos.length > 0;
+  const allCompleted = completedTodos() == todos.length && todos.length > 0;
   const titleClassName = classNameBuilder("todo-list-title", { condition: allCompleted, className: "all-completed" });
 
   return (
     <div className="todo-list">
       <span className={titleClassName}>
-        {props.title} - {completedTodos.length} / {todos.length}
+        {props.title} - {completedTodos()} / {todos.length}
       </span>
 
       <ul>
@@ -133,6 +134,7 @@ export default function TodoList(props: { title: string }) {
         <li>
           <input
             type="text"
+            key="new-todo"
             ref={newTodoInput}
             className="text-box"
             onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -154,7 +156,6 @@ export default function TodoList(props: { title: string }) {
           />
         </li>
       </ul>
-      {showCompleted && <span>Completed {showCompleted.title} 🎉</span>}
     </div>
   );
 }

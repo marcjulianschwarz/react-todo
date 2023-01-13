@@ -21,7 +21,7 @@ export function TodoListItem(props: TodoListItemProps) {
         className={className}
         spellCheck={false}
         ref={(el: HTMLInputElement) => onInit(todo, el)}
-        defaultValue={todo.title + (todo.completed ? " (completed)" : "")}
+        defaultValue={todo.title}
         onKeyDownCapture={(event: React.KeyboardEvent<HTMLInputElement>) => {
           if (event.key == "Backspace" && event.currentTarget.value == "") {
             event.preventDefault();

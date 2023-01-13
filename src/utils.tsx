@@ -29,5 +29,5 @@ export interface Todo {
 export enum NavigationDirection {
   Up,
   Down,
-  MouseClick
+  MouseClick,
 }

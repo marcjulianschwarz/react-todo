@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Todo } from "./utils";
 
 export function useFocus() {
@@ -21,4 +21,36 @@ export function useFocus() {
   }
 
   return [focusElement, getMap] as const;
+}
+
+export function useHUD() {
+  const [visible, setVisible] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [timeoutV, setTimeoutV] = useState<NodeJS.Timeout>();
+
+  const showHUD = (message: string, title?: string) => {
+    setVisible(true);
+    setMessage(message);
+    setTitle(title || "");
+  };
+
+  const hideHUD = () => {
+    setVisible(false);
+  };
+
+  const triggerHUD = (message: string, title?: string) => {
+    if (visible) {
+      hideHUD();
+      clearTimeout(timeoutV);
+    }
+    showHUD(message, title);
+
+    const timeout = setTimeout(() => {
+      hideHUD();
+    }, 2000);
+    setTimeoutV(timeout);
+  };
+
+  return [triggerHUD, { visible: visible, message: message, title: title }] as const;
 }

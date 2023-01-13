@@ -4,6 +4,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background-color: #1e1e1e;
+    --secondary-background-color: #343434;
     --text-color: #f0f0f0;
     --text-color-faint: #3a3a3a;
     --faint: #262626;
@@ -13,6 +14,7 @@
 @media (prefers-color-scheme: light) {
   :root {
     --background-color: #fafafa;
+    --secondary-background-color: #f0f0f0;
     --text-color: #1e1e1e;
     --text-color-faint: #959595;
     --faint: #e2e2e2;
@@ -83,9 +85,9 @@ hr.selected {
   color: darkseagreen !important;
 }
 .first-note-list-creation-container {
+  display: flex;
   justify-content: center;
   align-items: center;
-  display: flex;
   flex-direction: column;
 }
 .first-note-list-creation-container .intro {
@@ -125,4 +127,32 @@ hr.selected {
 }
 .first-note-list-creation-container input:focus {
   outline: none;
+}
+.HUD {
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1000;
+  width: max-content;
+}
+.HUD.hide {
+  display: none;
+}
+.HUD .content {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-background-color);
+  padding: 10px;
+  border-radius: 20px;
+}
+.HUD .content .message {
+  color: var(--text-color);
+  font-size: 13px;
+}
+.HUD .content .title {
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: 15px;
 }

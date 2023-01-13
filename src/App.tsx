@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { HUD } from "./components/HUD";
+import { useHUD } from "./hooks";
 import TodoList from "./TodoList";
 
 export default function App() {
   const [todoLists, setTodoLists] = useState<string[]>([]);
+  const [triggerHUD, HUDState] = useHUD();
 
   const firstInputRef = useRef<HTMLInputElement>(null);
 
@@ -12,20 +15,23 @@ export default function App() {
 
   if (todoLists.length > 0) {
     return (
-      <div
-        className="todo-lists-container"
-        onKeyDownCapture={(event: React.KeyboardEvent<HTMLDivElement>) => {
-          if (event.metaKey && event.shiftKey && event.key == "p") {
-            event.preventDefault();
-            event.stopPropagation();
-            setTodoLists([...todoLists, prompt("Enter a new todo list name") || "Default"]);
-          }
-        }}
-      >
-        {todoLists.map((title, idx) => {
-          return <TodoList title={title} key={idx} />;
-        })}
-      </div>
+      <>
+        <div
+          className="todo-lists-container"
+          onKeyDownCapture={(event: React.KeyboardEvent<HTMLDivElement>) => {
+            if (event.metaKey && event.shiftKey && event.key == "p") {
+              event.preventDefault();
+              event.stopPropagation();
+              setTodoLists([...todoLists, prompt("Enter a new todo list name") || "Default"]);
+            }
+          }}
+        >
+          {todoLists.map((title, idx) => {
+            return <TodoList title={title} key={idx} triggerHUD={triggerHUD} />;
+          })}
+        </div>
+        <HUD title={HUDState.title} message={HUDState.message} visible={HUDState.visible}></HUD>
+      </>
     );
   } else {
     return (
