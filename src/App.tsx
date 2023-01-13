@@ -23,6 +23,7 @@ export default function App() {
               event.preventDefault();
               event.stopPropagation();
               setTodoLists([...todoLists, prompt("Enter a new todo list name") || "Default"]);
+              triggerHUD("New List ✅", "");
             }
           }}
         >

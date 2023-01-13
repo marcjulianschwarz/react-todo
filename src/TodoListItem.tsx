@@ -13,6 +13,20 @@ export function TodoListItem(props: TodoListItemProps) {
   const { todo, onInit, onRemoveTodo, onUpdateTodo, onCompleted } = props;
 
   const className = classNameBuilder("text-box", { condition: todo.completed, className: "strike" });
+  let clickTimer: NodeJS.Timeout | null = null;
+
+  function handleTouch() {
+    if (clickTimer == null) {
+      clickTimer = setTimeout(function () {
+        clickTimer = null;
+        return false;
+      }, 500);
+    } else {
+      clearTimeout(clickTimer);
+      clickTimer = null;
+      return true;
+    }
+  }
 
   return (
     <li key={todo.id}>
@@ -51,6 +65,14 @@ export function TodoListItem(props: TodoListItemProps) {
           event.preventDefault();
           event.stopPropagation();
           props.onNavigation(NavigationDirection.MouseClick);
+        }}
+        onTouchStartCapture={(event: React.TouchEvent<HTMLInputElement>) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (handleTouch()) {
+            todo.completed = !todo.completed;
+            onCompleted(todo);
+          }
         }}
       />
     </li>

@@ -89,6 +89,7 @@ hr.selected {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-top: 10%;
 }
 .first-note-list-creation-container .intro {
   margin-top: 100px;
@@ -120,7 +121,6 @@ hr.selected {
   border: 0px solid;
   border-bottom: #959595 solid 1px;
   text-align: center;
-  margin-top: 40%;
   font-size: 24px;
   background-color: var(--background-color);
   color: var(--text-color);
