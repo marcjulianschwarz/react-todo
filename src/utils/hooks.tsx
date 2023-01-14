@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Todo } from "./utils";
+import { useEffect, useRef, useState } from "react";
+import { MyEvent, Todo } from "../utils";
 
 interface Unique {
   id: string;
@@ -58,4 +58,32 @@ export function useHUD() {
   };
 
   return [triggerHUD, { visible: visible, message: message, title: title }] as const;
+}
+
+export function useEvent() {
+  const [event, setEvent] = useState<MyEvent>();
+  const [callbacks, setCallbacks] = useState<Map<string, Function[]>>(new Map());
+
+  useEffect(() => {
+    if (event && callbacks.get(event.name)) {
+      callbacks.get(event.name)?.forEach((callback) => {
+        callback(event);
+      });
+    }
+  }, [event]);
+
+  function on(event: string, callback: Function) {
+    setCallbacks((prev) => {
+      const callbacks = prev.get(event) || [];
+      callbacks.push(callback);
+      prev.set(event, callbacks);
+      return prev;
+    });
+  }
+
+  function emit(ev: MyEvent) {
+    setEvent(ev);
+  }
+
+  return [on, emit] as const;
 }

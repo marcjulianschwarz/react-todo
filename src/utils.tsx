@@ -43,3 +43,8 @@ export interface Command {
   hotkey: string;
   id: string;
 }
+
+export interface MyEvent {
+  name: string;
+  payload: any;
+}

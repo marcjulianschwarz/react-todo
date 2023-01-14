@@ -1,7 +1,7 @@
 import { useReducer, useState } from "react";
 import { CommandPalette } from "./components/CommandPalette";
 import { HUD } from "./components/HUD";
-import { useHUD } from "./hooks";
+import { useHUD } from "./utils/hooks";
 import { EntryPage } from "./pages/EntryPage";
 import { TodoListPage } from "./pages/TodoListPage";
 import { todoListReducer } from "./todoReducer";
