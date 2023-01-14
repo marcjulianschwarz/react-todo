@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import { useFocus } from "./utils/hooks";
+import { useFocus } from "../../utils/hooks";
 import { todoReducer } from "./todoReducer";
-import { classNameBuilder, NavigationDirection, Todo, TodoList, UserAction } from "./utils";
+import { classNameBuilder, NavigationDirection, Todo, TodoList, UserAction } from "../../utils";
 import { TodoListItem } from "./TodoListItem";
 
 export default function TodoListComponent(props: {

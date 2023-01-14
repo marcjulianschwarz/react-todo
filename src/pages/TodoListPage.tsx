@@ -1,4 +1,4 @@
-import TodoListComponent from "../TodoList";
+import TodoListComponent from "../components/Todo/TodoList";
 import { TodoList } from "../utils";
 
 export function TodoListPage(props: {

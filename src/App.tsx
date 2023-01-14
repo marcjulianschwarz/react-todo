@@ -4,7 +4,7 @@ import { HUD } from "./components/HUD";
 import { useHUD } from "./utils/hooks";
 import { EntryPage } from "./pages/EntryPage";
 import { TodoListPage } from "./pages/TodoListPage";
-import { todoListReducer } from "./todoReducer";
+import { todoListReducer } from "./components/Todo/todoReducer";
 import { Command, TodoList, UserAction } from "./utils";
 
 export default function App() {

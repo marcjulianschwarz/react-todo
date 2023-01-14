@@ -50,6 +50,9 @@ export function CommandPalette(props: { onCommand: (command: Command) => void })
             event.stopPropagation();
             setFocused(0);
           }
+          if (event.key == "Enter") {
+            props.onCommand(commands[0]);
+          }
         }}
         onFocus={() => setFocused(-1)}
       />

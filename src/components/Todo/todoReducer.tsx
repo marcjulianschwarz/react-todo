@@ -1,4 +1,4 @@
-import { Todo, TodoList, UserAction } from "./utils";
+import { Todo, TodoList, UserAction } from "../../utils";
 
 type TodoReducerAction =
   | { type: UserAction.Add; payload: { title: string } }

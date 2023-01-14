@@ -1,4 +1,4 @@
-import { classNameBuilder, NavigationDirection, Todo } from "./utils";
+import { classNameBuilder, NavigationDirection, Todo } from "../../utils";
 
 interface TodoListItemProps {
   todo: Todo;
