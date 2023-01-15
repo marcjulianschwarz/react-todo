@@ -1,12 +1,15 @@
+import { useContext } from "react";
 import TodoListComponent from "../components/Todo/TodoList";
 import { TodoList } from "../utils";
+import { EventContext } from "../utils/events";
 
 export function TodoListPage(props: {
   todoLists: TodoList[];
   onTodoListCreate: (title: string) => void;
   onTodoListDelete: (list: TodoList) => void;
-  triggerHUD: (title: string | undefined, message: string) => void;
 }) {
+  const [onAppEvent, emitAppEvent] = useContext(EventContext);
+
   return (
     <>
       <div
@@ -17,7 +20,13 @@ export function TodoListPage(props: {
             event.stopPropagation();
             const title = prompt("New Todo List Title") || "No Name";
             props.onTodoListCreate(title);
-            props.triggerHUD("New List ✅", "");
+            emitAppEvent({
+              name: "showHUD",
+              payload: {
+                title: "New Todo List",
+                message: `Todo list "${title}" created`,
+              },
+            });
           }
         }}
       >
@@ -26,7 +35,6 @@ export function TodoListPage(props: {
             <TodoListComponent
               todoList={todoList}
               key={todoList.id}
-              triggerHUD={props.triggerHUD}
               handleListDelete={(list: TodoList) => props.onTodoListDelete(list)}
             />
           );

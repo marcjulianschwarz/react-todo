@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { MyEvent, Todo } from "../utils";
-
-interface Unique {
-  id: string;
-}
+import { MyEvent, Unique } from "../utils";
 
 export function useFocus<P extends Unique>() {
-  // Store refs to todo items
+  // Store refs to todo items in a map from id to element
   const itemsRef = useRef<Map<string, HTMLElement>>();
 
   function getMap() {
@@ -16,6 +12,7 @@ export function useFocus<P extends Unique>() {
     return itemsRef.current;
   }
 
+  // gets element from map and focuses it
   function focusElement(item: P) {
     const map = getMap();
     const el = map.get(item.id);
@@ -72,7 +69,7 @@ export function useEvent() {
     }
   }, [event]);
 
-  function on(event: string, callback: Function) {
+  function on(event: string, callback: (ev: MyEvent) => void) {
     setCallbacks((prev) => {
       const callbacks = prev.get(event) || [];
       callbacks.push(callback);

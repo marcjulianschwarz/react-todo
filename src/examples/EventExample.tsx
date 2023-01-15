@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { MyEvent } from "../utils";
 import { EventContext } from "../utils/events";
 import { useEvent } from "../utils/hooks";
 
@@ -67,7 +68,7 @@ function FithComp() {
 
   useEffect(() => {
     console.log("Fifth Comp is subscribing to count event");
-    on("secret", (payload: any) => {
+    on("secret", (event: MyEvent) => {
       setShowMessage(true);
     });
   }, []);

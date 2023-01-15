@@ -23,17 +23,17 @@ export function todoReducer(todos: Todo[], action: TodoReducerAction) {
       return newTodos;
     }
     case UserAction.Delete: {
-      console.log("Delete " + action.payload.todo.title);
+      console.log("Delete todo " + action.payload.todo.title);
       const newTodos = todos.filter((t: Todo) => t.id != action.payload.todo.id);
       return newTodos;
     }
     case UserAction.Update: {
-      console.log("Update " + action.payload.todo.title);
+      console.log("Update todo " + action.payload.todo.title);
       const updatedTodos = updateTodo(todos, action.payload.todo);
       return updatedTodos;
     }
     case UserAction.Completed: {
-      console.log("Completed " + (action.payload.todo.completed ? "✅" : "❌"));
+      console.log("Completed todo " + (action.payload.todo.completed ? "✅" : "❌"));
       const updatedTodos = updateTodo(todos, action.payload.todo);
       return updatedTodos;
     }
@@ -50,13 +50,13 @@ type TodoListReducerAction =
 export function todoListReducer(todoLists: TodoList[], action: TodoListReducerAction) {
   switch (action.type) {
     case UserAction.Add: {
-      console.log("Add " + action.payload.title);
+      console.log("Add todolist " + action.payload.title);
       const newTodoLists = [...todoLists, { title: action.payload.title, todos: [], id: crypto.randomUUID() }];
       localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
       return newTodoLists;
     }
     case UserAction.Delete: {
-      console.log("Delete " + action.payload.id);
+      console.log("Delete todolist " + action.payload.id);
       const newTodoLists = todoLists.filter((t: TodoList) => t.id != action.payload.id);
       localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
       return newTodoLists;

@@ -1,17 +1,15 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useContext, useEffect, useReducer, useRef, useState } from "react";
 import { useFocus } from "../../utils/hooks";
 import { todoReducer } from "./todoReducer";
 import { classNameBuilder, NavigationDirection, Todo, TodoList, UserAction } from "../../utils";
 import { TodoListItem } from "./TodoListItem";
+import { EventContext } from "../../utils/events";
 
-export default function TodoListComponent(props: {
-  todoList: TodoList;
-  triggerHUD: (title: string | undefined, message: string) => void;
-  handleListDelete: (list: TodoList) => void;
-}) {
+export default function TodoListComponent(props: { todoList: TodoList; handleListDelete: (list: TodoList) => void }) {
   const [todos, dispatch] = useReducer(todoReducer, props.todoList.todos);
   const [focusElement, getMap] = useFocus<Todo>();
   const [currentPosition, setCurrentPosition] = useState(-1);
+  const [onAppEvent, emitAppEvent] = useContext(EventContext);
 
   // Setting focus to new todo input
   const newTodoInput = useRef<HTMLInputElement>(null);
@@ -80,10 +78,22 @@ export default function TodoListComponent(props: {
     });
     const completed = completedTodos();
     if (completed == todos.length) {
-      props.triggerHUD("", "All done! 🎉");
+      emitAppEvent({
+        name: "showHUD",
+        payload: {
+          title: "All done! 🎉",
+          message: "",
+        },
+      });
     } else {
       if (todo.completed) {
-        props.triggerHUD("", "Completed" + " 🎉  " + (todos.length - completed) + " more to go");
+        emitAppEvent({
+          name: "showHUD",
+          payload: {
+            title: "Completed" + " 🎉  " + (todos.length - completed) + " more to go",
+            message: "",
+          },
+        });
       }
     }
   }

@@ -48,3 +48,7 @@ export interface MyEvent {
   name: string;
   payload: any;
 }
+
+export interface Unique {
+  id: string;
+}
