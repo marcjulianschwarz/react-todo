@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useRef } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 
 interface ListProps {
   children: React.ReactNode;
@@ -7,9 +7,9 @@ interface ListProps {
 
 interface ListItemProps {
   children: React.ReactNode;
-  onFocus?: () => void;
-  onSelection?: () => void;
   focus?: boolean;
+  onSelection?: () => void;
+  onFocus?: () => void;
 }
 
 function handleSelectionKey(key: string, onSelection?: () => void) {
@@ -25,22 +25,12 @@ function ListItem(props: ListItemProps) {
     if (props.focus) {
       ref.current?.focus();
     }
-  });
+  }, [props.focus]);
 
   return (
-    <div
-      ref={ref}
-      tabIndex={-1}
-      onFocus={() => {
-        if (props.onFocus) {
-          props.onFocus();
-        }
-      }}
-      className="list-item"
-      onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
-        handleSelectionKey(event.key, props.onSelection);
-      }}
-    >
+    <div ref={ref} tabIndex={-1} className="list-item" onFocus={props.onFocus} onKeyDown={(event) => {
+      handleSelectionKey(event.key, props.onSelection);
+    }}>
       {props.children}
     </div>
   );
@@ -50,5 +40,22 @@ function List(props: ListProps) {
   return <div className={"list" + " " + props.className}>{props.children}</div>;
 }
 
+function ListItemInput(props: { defaultValue: string }) {
+  return (
+    <input
+      type="text"
+      defaultValue={props.defaultValue}
+      onKeyDown={(event) => {
+        if (event.key == "ArrowDown") {
+          event.preventDefault();
+          event.stopPropagation();
+          // setFocusedIdx((focusedIdx + 1) % todos.length);
+        }
+      }}
+    />
+  );
+}
+
+ListItem.Input = ListItemInput;
 List.Item = ListItem;
 export default List;

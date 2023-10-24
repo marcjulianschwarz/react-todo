@@ -42,15 +42,15 @@ export function useHUD() {
   };
 
   const triggerHUD = (title: string | undefined, message: string) => {
-    if (visible) {
-      hideHUD();
-      clearTimeout(timeoutV);
-    }
+    // if (visible) {
+    //   // hideHUD();
+    //   clearTimeout(timeoutV);
+    // }
     showHUD(message, title);
 
     const timeout = setTimeout(() => {
       hideHUD();
-    }, 2000);
+    }, 6000);
     setTimeoutV(timeout);
   };
 
@@ -79,6 +79,7 @@ export function useEvent() {
   }
 
   function emit(ev: MyEvent) {
+    console.log("EMITTING EVENT: " + ev.name);
     setEvent(ev);
   }
 

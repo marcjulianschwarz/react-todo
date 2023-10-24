@@ -243,6 +243,3 @@ hr.selected {
 .command-palette .command .title {
   color: var(--text-color);
 }
-.app {
-  min-height: 100vh;
-}

@@ -7,7 +7,7 @@ import { Command, TodoList, UserAction } from "../utils";
 import { Pager } from "../utils/Pager";
 import { EventContext } from "../utils/events";
 
-export function TodoControl() {
+export function TodoControl(props: { appRef: React.RefObject<HTMLDivElement> }) {
   const [todoLists, dispatch] = useReducer(
     todoListReducer,
     localStorage.getItem("todoLists") ? JSON.parse(localStorage.getItem("todoLists") || "") : []

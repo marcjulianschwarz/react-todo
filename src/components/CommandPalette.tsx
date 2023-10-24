@@ -6,11 +6,16 @@ export function CommandPalette(props: { onCommand: (command: Command) => void })
   const allCommands: Command[] = [
     { title: "New List", hotkey: "⌘ + ⇧ + P", id: "new-list" },
     { title: "Delete List", hotkey: "-", id: "delete-list" },
+    { title: "Toggle Todo", hotkey: "⌘ + Enter", id: "toggle-todo" },
   ];
 
   const [commands, setCommands] = useState(allCommands);
   const [focused, setFocused] = useState(-1);
   const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
 
   return (
     <div
